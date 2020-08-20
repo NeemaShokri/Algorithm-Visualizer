@@ -18,9 +18,9 @@ class Edge {
         return this.weight;
     }
 
-    draw() {
-        ctx.strokeStyle = "Red";
-        ctx.lineWidth = 2;
+    draw(color) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = scale / 2;
         ctx.beginPath();
         ctx.moveTo(this.v1.getX() + scale / 2, this.v1.getY() + scale / 2);
         ctx.lineTo(this.v2.getX() + scale / 2, this.v2.getY() + scale / 2);

@@ -13,12 +13,10 @@ class Vertex {
         return this.y;
     }
 
-    draw() {
-        ctx.fillStyle = "Black";
-        ctx.strokeRect(this.x, this.y, scale, scale);
-        ctx.fillStyle = "Red";
+    draw(color) {
+        ctx.fillStyle = color
         ctx.beginPath();
-        ctx.arc(this.x + scale/2, this.y + scale/2, 3, 0, 2 * Math.PI);
+        ctx.arc(this.x + scale/2, this.y + scale/2, scale / 4, 0, 2 * Math.PI);
         ctx.fill();
     }
 }

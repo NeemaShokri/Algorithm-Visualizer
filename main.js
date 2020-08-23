@@ -1,6 +1,8 @@
 const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-const scale = 40;
+var ctx = canvas.getContext("2d");
+const scale = 20;
+ctx.canvas.width = Math.ceil((window.innerWidth * 0.9) / scale) * scale;
+ctx.canvas.height = Math.ceil((window.innerHeight * 0.9) / scale) * scale;
 const rows = canvas.height / scale;
 const cols = canvas.width / scale;
 var mst;
@@ -24,7 +26,7 @@ function carveMaze() {
             const v = new Vertex(j * scale, i * scale);
             setTimeout(() => {
                 v.draw("White");
-            }, 60 * i);
+            }, 25 * i);
             temp.push(v);
             graph.addVertex(v);
         }
@@ -48,14 +50,14 @@ function carveMaze() {
     }
 
     mst = KruskalsMSTFinder(graph);
-    var timer = 210
+    var timer = 750
 
     Array.from(mst.getEdges()).sort(function(a, b) {
         return a.getWeight() - b.getWeight();
     }).forEach(e => {
         setTimeout(() => {
             e.draw("White");
-        }, timer * 5);
+        }, timer * 1);
         timer++;
     })
 }

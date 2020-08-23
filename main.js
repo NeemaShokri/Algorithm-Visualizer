@@ -5,6 +5,7 @@ const rows = canvas.height / scale;
 const cols = canvas.width / scale;
 var vertecies = [];
 var edges = [];
+var mst;
 var start = null;
 var end = null;
 
@@ -42,7 +43,7 @@ function carveMaze() {
         }
     }
 
-    var mst = KruskalsMSTFinder(edges, vertecies);
+    mst = KruskalsMSTFinder(edges, vertecies);
     var timer = 240
 
     mst.forEach(e => {
@@ -57,6 +58,7 @@ function solveMaze() {
     if (start != null && end != null) {
         start.draw("White");
         end.draw("White");
+        mst.forEach(e => {e.draw();});
     }
 
     var x1 = Math.floor(Math.random() * vertecies.length);

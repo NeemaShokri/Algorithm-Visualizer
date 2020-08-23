@@ -1,12 +1,12 @@
-function KruskalsMSTFinder(edges, vertecies) {
+function KruskalsMSTFinder(graph) {
     var finalMST = new Set();
     var msts = new DisjointSets();
+    var edges = Array.from(graph.getEdges());
 
-    vertecies.forEach(arr => {
-        arr.forEach(v => {
-            msts.makeSet(v);
-        })
+    graph.getVertices().forEach(v => {
+        msts.makeSet(v);
     })
+
 
     edges.sort(function(a, b) {
         return a.getWeight() - b.getWeight();
@@ -25,5 +25,5 @@ function KruskalsMSTFinder(edges, vertecies) {
         }
     })
 
-    return finalMST;
+    return new Graph(graph.getVertices(), finalMST);
 }

@@ -3,50 +3,56 @@ const ctx = canvas.getContext("2d");
 const scale = 40;
 const rows = canvas.height / scale;
 const cols = canvas.width / scale;
-var vertecies = [];
-var edges = [];
 var mst;
 var start = null;
 var end = null;
 
+console.log("rows:" + rows);
+console.log("cols: " + cols);
+
 function carveMaze() {
     
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+    graph = Graph.constructWithoutVertices();
     vertecies = [];
     edges = [];
 
+    //Create grid of vertices
     for (let i = 0; i < rows; i++) {
         var temp = [];
         for (let j = 0; j < cols; j++) {
-            const v = new Vertex(i * scale, j * scale);
+            const v = new Vertex(j * scale, i * scale);
             setTimeout(() => {
                 v.draw("White");
             }, 60 * i);
             temp.push(v);
+            graph.addVertex(v);
         }
         vertecies.push(temp);
     }
     
-    for (let i = 0; i < rows; i+=1) {
-        for (let j = 0; j < cols; j+=1) {
+    //Create random weight edges between vertices
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
             if (i + 1 < vertecies.length) {
                 const e = new Edge(vertecies[i][j], vertecies[i + 1][j], Math.random());
-                //e.draw();
                 edges.push(e);
+                graph.addEdge(e);
             }
-            if (j + 1 < vertecies.length) {
+            if (j + 1 < vertecies[0].length) {
                 const e = new Edge(vertecies[i][j], vertecies[i][j + 1], Math.random());
-                //e.draw();
                 edges.push(e);
+                graph.addEdge(e);
             }
         }
     }
 
-    mst = KruskalsMSTFinder(edges, vertecies);
-    var timer = 240
+    mst = KruskalsMSTFinder(graph);
+    var timer = 210
 
-    mst.forEach(e => {
+    Array.from(mst.getEdges()).sort(function(a, b) {
+        return a.getWeight() - b.getWeight();
+    }).forEach(e => {
         setTimeout(() => {
             e.draw("White");
         }, timer * 5);
@@ -58,17 +64,11 @@ function solveMaze() {
     if (start != null && end != null) {
         start.draw("White");
         end.draw("White");
-        mst.forEach(e => {e.draw();});
+        mst.getEdges().forEach(e => {e.draw();});
     }
 
-    var x1 = Math.floor(Math.random() * vertecies.length);
-    var y1 = Math.floor(Math.random() * vertecies.length);
-
-    var x2 = Math.floor(Math.random() * vertecies.length);
-    var y2 = Math.floor(Math.random() * vertecies.length);
-
-    start = vertecies[x1][y1]
-    end = vertecies[x2][y2]
+    start = Array.from(mst.getVertices())[Math.floor(Math.random() * Array.from(mst.getVertices()).length)];
+    end = Array.from(mst.getVertices())[Math.floor(Math.random() * Array.from(mst.getVertices()).length)];
 
     start.draw("Green");
     end.draw("Red");
